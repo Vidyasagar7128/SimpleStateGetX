@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'package:bakery/pages/cartpage.dart';
 import 'package:bakery/services/apiservice.dart';
 import 'package:bakery/services/cartservice.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +16,9 @@ class ProfilePage extends StatelessWidget {
             padding: const EdgeInsets.all(13.0),
             child: GetX<CartService>(builder: (controller) {
               return MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.to(() => CartPage());
+                },
                 child: Text(
                   '${controller.getCount}',
                   style: TextStyle(color: Colors.white, fontSize: 20),
@@ -49,7 +50,17 @@ class ProfilePage extends StatelessWidget {
                           child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('${controller.cakes[index].image}'),
+                          Container(
+                              width: 100.0,
+                              height: 100.0,
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(50.0)),
+                                color: Colors.redAccent,
+                              ),
+                              child: Image.network(
+                                  '${controller.cakes[index].image}',
+                                  fit: BoxFit.cover)),
                           SizedBox(height: 50),
                           Text(controller.cakes[index].name.toString()),
                           SizedBox(height: 10),
@@ -58,6 +69,7 @@ class ProfilePage extends StatelessWidget {
                             color: Colors.blue,
                             onPressed: () {
                               cartService.addtocart(controller.cakes[index]);
+                              cartService.cartCake(controller.cakes[index].id);
                             },
                             child: Text(
                               'Cart',
